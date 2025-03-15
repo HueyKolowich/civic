@@ -17,5 +17,5 @@ export const dataSource = new DataSource({
     ],
     synchronize: process.env.NODE_ENV !== 'production',
     logging: process.env.NODE_ENV !== 'production',
-    driver: require('mysql'),
+    // driver: require('mysql2'),
 });

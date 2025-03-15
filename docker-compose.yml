@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+    mysql:
+        image: mysql:8
+        container_name: mysql_db
+        restart: always
+        env_file:
+            - .env
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - '3306:3306'
+        volumes:
+            - mysql_data:/var/lib/mysql
+
+    app:
+        build:
+            context: .
+            target: prod
+        container_name: sandbox_app
+        restart: always
+        depends_on:
+            - mysql
+        env_file:
+            - .env
+        environment:
+            NODE_ENV: ${NODE_ENV}
+            DB_HOST: ${DB_HOST}
+            DB_USER: ${DB_USER}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_NAME: ${DB_NAME}
+        ports:
+            - '3000:3000'
+
+volumes:
+    mysql_data:
