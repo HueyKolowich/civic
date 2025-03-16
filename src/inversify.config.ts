@@ -4,7 +4,11 @@ import { IssueRepositoryInterface } from './repositories/IssueRepositoryInterfac
 import { IssueRepository } from './repositories/IssueRepository';
 import { IssueServiceInterface } from './services/IssueServiceInterface';
 import { IssueService } from './services/IssueService';
-import { IssueController } from './controllers/IssueController';
+import { PositionController } from './controllers/PositionController';
+import { PositionServiceInterface } from './services/PositionServiceInterface';
+import { PositionService } from './services/PositionService';
+import { PositionRepositoryInterface } from './repositories/PositionRepositoryInterface';
+import { PositionRepository } from './repositories/PositionRepository';
 
 const container = new Container();
 
@@ -14,6 +18,12 @@ container
 container
     .bind<IssueServiceInterface>(TYPES.IssueServiceInterface)
     .to(IssueService);
-container.bind<IssueController>(IssueController).toSelf();
+container
+    .bind<PositionRepositoryInterface>(TYPES.PositionRepositoryInterface)
+    .to(PositionRepository);
+container
+    .bind<PositionServiceInterface>(TYPES.PositionServiceInterface)
+    .to(PositionService);
+container.bind<PositionController>(PositionController).toSelf();
 
 export default container;

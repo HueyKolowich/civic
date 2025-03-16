@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import express from 'express';
-import issuesRouter from './routes/issue';
 import { dataSource } from './db/config';
 import dotenv from 'dotenv';
+import positionRouter from './routes/position';
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ dataSource
 
         app.use(express.json());
 
-        app.use('/issues', issuesRouter);
+        app.use('/positions', positionRouter);
 
         app.listen(port, () => {
             console.log(`Server started and listening on port: ${port}`);
