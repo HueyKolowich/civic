@@ -13,8 +13,8 @@ export class PositionRepository implements PositionRepositoryInterface {
         this.repo = dataSource.getRepository(Position);
     }
 
-    async createPosition(data: PositionDto): Promise<Position> {
-        const position = this.repo.create(data);
-        return await this.repo.save(position);
+    async savePositions(positions: PositionDto[]): Promise<Position[]> {
+        const createdPostions = this.repo.create(positions);
+        return await this.repo.save(createdPostions);
     }
 }

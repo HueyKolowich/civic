@@ -13,10 +13,8 @@ export class PositionService implements PositionServiceInterface {
     ) {}
 
     async createPositions(positions: PositionDto[]): Promise<Position[]> {
-        const createdPositions = await Promise.all(
-            positions.map((position) =>
-                this.positionRepository.createPosition(position)
-            )
+        const createdPositions = await this.positionRepository.savePositions(
+            positions
         );
 
         return createdPositions;
