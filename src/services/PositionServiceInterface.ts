@@ -1,5 +1,6 @@
+import { PositionDto } from '../models/dto/Position';
 import { Position } from '../models/Position';
 
 export interface PositionServiceInterface {
-    createPositions(data: any): Promise<Position[]>;
+    createPositions(positions: PositionDto[]): Promise<Position[]>;
 }

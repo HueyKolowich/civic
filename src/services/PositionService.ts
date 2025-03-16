@@ -4,8 +4,6 @@ import { PositionServiceInterface } from './PositionServiceInterface';
 import { PositionRepositoryInterface } from '../repositories/PositionRepositoryInterface';
 import { TYPES } from '../types';
 import { PositionDto } from '../models/dto/Position';
-import { plainToInstance } from 'class-transformer';
-import { validate } from 'class-validator';
 
 @injectable()
 export class PositionService implements PositionServiceInterface {
@@ -14,32 +12,13 @@ export class PositionService implements PositionServiceInterface {
         private positionRepository: PositionRepositoryInterface
     ) {}
 
-    async createPositions(data: any): Promise<Position[]> {
-        const positionsData = Array.isArray(data) ? data : [data];
-
-        const validatedData = await Promise.all(
-            positionsData.map(
-                async (position: any) => await this.validatePosition(position)
-            )
-        );
-
+    async createPositions(positions: PositionDto[]): Promise<Position[]> {
         const createdPositions = await Promise.all(
-            validatedData.map((validPosition) =>
-                this.positionRepository.createPosition(validPosition)
+            positions.map((position) =>
+                this.positionRepository.createPosition(position)
             )
         );
 
         return createdPositions;
-    }
-
-    private async validatePosition(position: any): Promise<PositionDto> {
-        const dto = plainToInstance(PositionDto, position);
-
-        const errors = await validate(dto);
-        if (errors.length > 0) {
-            throw new Error(`Validation failed: ${JSON.stringify(errors)}`);
-        }
-
-        return dto;
     }
 }
