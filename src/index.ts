@@ -3,6 +3,7 @@ import express from 'express';
 import { dataSource } from './db/config';
 import dotenv from 'dotenv';
 import positionRouter from './routes/position';
+import { ObservationalRelationshipManager } from './services/observation/ObservationalRelationshipManager';
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ dataSource
         const port = process.env.PORT;
 
         app.use(express.json());
+
+        ObservationalRelationshipManager.init();
 
         app.use('/positions', positionRouter);
 

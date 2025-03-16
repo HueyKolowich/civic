@@ -9,6 +9,8 @@ import { PositionServiceInterface } from './services/PositionServiceInterface';
 import { PositionService } from './services/PositionService';
 import { PositionRepositoryInterface } from './repositories/PositionRepositoryInterface';
 import { PositionRepository } from './repositories/PositionRepository';
+import { ObserverInterface } from './services/observation/observers/ObserverInterface';
+import { PositionsObserver } from './services/observation/observers/PositionsObsever';
 
 const container = new Container();
 
@@ -25,5 +27,8 @@ container
     .bind<PositionServiceInterface>(TYPES.PositionServiceInterface)
     .to(PositionService);
 container.bind<PositionController>(PositionController).toSelf();
+container
+    .bind<ObserverInterface>(TYPES.PositionsObserver)
+    .to(PositionsObserver);
 
 export default container;

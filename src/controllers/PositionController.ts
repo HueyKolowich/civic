@@ -28,6 +28,7 @@ export class PositionController {
             const positions = await this.positionService.createPositions(
                 validatedPositions
             );
+
             return res.status(201).json(positions);
         } catch (error: any) {
             if (error.message.includes('Validation failed')) {

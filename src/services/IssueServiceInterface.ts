@@ -1,5 +1,6 @@
+import { IssueDto } from '../models/dto/Issue';
 import { Issue } from '../models/Issue';
 
 export interface IssueServiceInterface {
-    createIssues(data: any): Promise<Issue[]>;
+    consolidateIssues(possibleIssues: IssueDto[]): Promise<Issue[]>;
 }
