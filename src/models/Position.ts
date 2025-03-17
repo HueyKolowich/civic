@@ -3,8 +3,10 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
+    Index,
 } from 'typeorm';
 
+@Index('idx_level_levelid', ['level', 'level_id'])
 @Entity()
 export class Position {
     @PrimaryGeneratedColumn()

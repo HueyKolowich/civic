@@ -1,3 +1,3 @@
 export interface ObserverInterface {
-    update(): void;
+    update(data: any): void;
 }

@@ -7,11 +7,11 @@ export abstract class Subject {
         Subject.observers.add(observer);
     }
 
-    protected notify(): void {
+    protected notify(data: any): void {
         Subject.observers.forEach((observer) => {
             setImmediate(() => {
                 try {
-                    observer.update();
+                    observer.update(data);
                 } catch (error) {
                     console.error('Observer update failed:', error);
                 }

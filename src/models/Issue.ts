@@ -5,6 +5,11 @@ import {
     CreateDateColumn,
 } from 'typeorm';
 
+/**
+ * This will proabably need further modification to make it
+ * easier to tell which canidadates feel which ways about
+ * an issue.
+ */
 @Entity()
 export class Issue {
     @PrimaryGeneratedColumn()

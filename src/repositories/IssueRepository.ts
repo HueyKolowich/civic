@@ -13,8 +13,12 @@ export class IssueRepository implements IssueRepositoryInterface {
         this.repo = dataSource.getRepository(Issue);
     }
 
-    async createIssue(data: IssueDto): Promise<Issue> {
-        const issue = this.repo.create(data);
-        return await this.repo.save(issue);
+    async updateIssues(issues: IssueDto[]): Promise<Issue[]> {
+        this.repo.delete({
+            level: issues[0].level,
+            level_id: issues[0].level_id,
+        });
+        const createdIssues = this.repo.create(issues);
+        return await this.repo.save(createdIssues);
     }
 }

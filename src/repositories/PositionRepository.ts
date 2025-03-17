@@ -17,4 +17,13 @@ export class PositionRepository implements PositionRepositoryInterface {
         const createdPostions = this.repo.create(positions);
         return await this.repo.save(createdPostions);
     }
+
+    async getPositionsByLevelId(
+        level: string,
+        level_id: number
+    ): Promise<Position[]> {
+        return await this.repo.find({
+            where: { level: level, level_id: level_id },
+        });
+    }
 }

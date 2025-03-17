@@ -10,7 +10,7 @@ export class PositionsObserver implements ObserverInterface {
         private issueService: IssueServiceInterface
     ) {}
 
-    update(): void {
-        this.issueService.consolidateIssues([]);
+    update(data: any): void {
+        this.issueService.consolidateIssues(data.level, data.level_id);
     }
 }

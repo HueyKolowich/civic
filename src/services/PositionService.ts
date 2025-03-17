@@ -23,8 +23,17 @@ export class PositionService
             positions
         );
 
-        this.notify();
+        const data = {
+            level: createdPositions[0].level,
+            level_id: createdPositions[0].level_id,
+        };
+
+        this.notify(data);
 
         return createdPositions;
+    }
+
+    async getPositions(level: string, level_id: number): Promise<Position[]> {
+        return this.positionRepository.getPositionsByLevelId(level, level_id);
     }
 }
