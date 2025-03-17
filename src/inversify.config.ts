@@ -11,6 +11,7 @@ import { PositionRepositoryInterface } from './repositories/PositionRepositoryIn
 import { PositionRepository } from './repositories/PositionRepository';
 import { ObserverInterface } from './services/observation/observers/ObserverInterface';
 import { PositionsObserver } from './services/observation/observers/PositionsObsever';
+import { QuizController } from './controllers/QuizController';
 
 const container = new Container();
 

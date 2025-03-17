@@ -3,6 +3,7 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
+    Index,
 } from 'typeorm';
 
 /**
@@ -10,6 +11,7 @@ import {
  * easier to tell which canidadates feel which ways about
  * an issue.
  */
+@Index('idx_level_levelid', ['level', 'level_id'])
 @Entity()
 export class Issue {
     @PrimaryGeneratedColumn()

@@ -3,8 +3,9 @@ import express from 'express';
 import cors from 'cors';
 import { dataSource } from './db/config';
 import dotenv from 'dotenv';
-import positionRouter from './routes/position';
 import { ObservationalRelationshipManager } from './services/observation/ObservationalRelationshipManager';
+import positionRouter from './routes/position';
+import quizRouter from './routes/quiz';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ dataSource
         ObservationalRelationshipManager.init();
 
         app.use('/positions', positionRouter);
+        app.use('/quiz', quizRouter);
 
         app.listen(port, () => {
             console.log(`Server started and listening on port: ${port}`);

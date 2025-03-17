@@ -21,4 +21,13 @@ export class IssueRepository implements IssueRepositoryInterface {
         const createdIssues = this.repo.create(issues);
         return await this.repo.save(createdIssues);
     }
+
+    async getIssuesByLevelId(
+        level: string,
+        level_id: number
+    ): Promise<Issue[]> {
+        return await this.repo.find({
+            where: { level: level, level_id: level_id },
+        });
+    }
 }

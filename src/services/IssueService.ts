@@ -35,8 +35,17 @@ export class IssueService implements IssueServiceInterface {
             return dto;
         });
 
-        const createdIssues = await this.issueRepository.updateIssues(issues);
+        return await this.issueRepository.updateIssues(issues);
+    }
 
-        return createdIssues;
+    async getIssues(level: string, level_id: number): Promise<IssueDto[]> {
+        const issues = await this.issueRepository.getIssuesByLevelId(
+            level,
+            level_id
+        );
+
+        return plainToInstance(IssueDto, issues, {
+            excludeExtraneousValues: true,
+        });
     }
 }
