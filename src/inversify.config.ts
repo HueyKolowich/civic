@@ -14,21 +14,29 @@ import { PositionsObserver } from './services/observation/observers/PositionsObs
 
 const container = new Container();
 
+// Repositories
 container
     .bind<IssueRepositoryInterface>(TYPES.IssueRepositoryInterface)
     .to(IssueRepository);
 container
+    .bind<PositionRepositoryInterface>(TYPES.PositionRepositoryInterface)
+    .to(PositionRepository);
+
+// Services
+container
     .bind<IssueServiceInterface>(TYPES.IssueServiceInterface)
     .to(IssueService);
 container
-    .bind<PositionRepositoryInterface>(TYPES.PositionRepositoryInterface)
-    .to(PositionRepository);
-container
     .bind<PositionServiceInterface>(TYPES.PositionServiceInterface)
     .to(PositionService);
+
+// Controllers
 container.bind<PositionController>(PositionController).toSelf();
+container.bind<QuizController>(QuizController).toSelf();
+
+// Observers
 container
-    .bind<ObserverInterface>(TYPES.PositionsObserver)
+    .bind<ObserverInterface>(TYPES.ObserverInterface)
     .to(PositionsObserver);
 
 export default container;
