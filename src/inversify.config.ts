@@ -1,17 +1,25 @@
 import { Container } from 'inversify';
 import { TYPES } from './types';
-import { IssueRepositoryInterface } from './repositories/IssueRepositoryInterface';
-import { IssueRepository } from './repositories/IssueRepository';
+
+import { ObserverInterface } from './services/observation/observers/ObserverInterface';
+import { PositionsObserver } from './services/observation/observers/PositionsObsever';
+
+import { QuizController } from './controllers/QuizController';
 import { IssueServiceInterface } from './services/IssueServiceInterface';
 import { IssueService } from './services/IssueService';
+import { IssueRepositoryInterface } from './repositories/IssueRepositoryInterface';
+import { IssueRepository } from './repositories/IssueRepository';
+
 import { PositionController } from './controllers/PositionController';
 import { PositionServiceInterface } from './services/PositionServiceInterface';
 import { PositionService } from './services/PositionService';
 import { PositionRepositoryInterface } from './repositories/PositionRepositoryInterface';
 import { PositionRepository } from './repositories/PositionRepository';
-import { ObserverInterface } from './services/observation/observers/ObserverInterface';
-import { PositionsObserver } from './services/observation/observers/PositionsObsever';
-import { QuizController } from './controllers/QuizController';
+
+import { AffinityServiceInterface } from './services/AffinityServiceInterface';
+import { AffinityService } from './services/AffinityService';
+import { AffinityRepositoryInterface } from './repositories/AffinityRepositoryInterface';
+import { AffinityRepository } from './repositories/AffinityRepository';
 
 const container = new Container();
 
@@ -22,6 +30,9 @@ container
 container
     .bind<PositionRepositoryInterface>(TYPES.PositionRepositoryInterface)
     .to(PositionRepository);
+container
+    .bind<AffinityRepositoryInterface>(TYPES.AffinityRepositoryInterface)
+    .to(AffinityRepository);
 
 // Services
 container
@@ -30,6 +41,9 @@ container
 container
     .bind<PositionServiceInterface>(TYPES.PositionServiceInterface)
     .to(PositionService);
+container
+    .bind<AffinityServiceInterface>(TYPES.AffinityServiceInterface)
+    .to(AffinityService);
 
 // Controllers
 container.bind<PositionController>(PositionController).toSelf();

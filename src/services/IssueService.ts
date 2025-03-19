@@ -2,10 +2,11 @@ import { inject, injectable } from 'inversify';
 import { IssueServiceInterface } from './IssueServiceInterface';
 import { IssueRepositoryInterface } from '../repositories/IssueRepositoryInterface';
 import { TYPES } from '../types';
-import { Issue } from '../models/Issue';
 import { PositionServiceInterface } from './PositionServiceInterface';
 import { IssueDto } from '../models/dto/Issue';
 import { plainToInstance } from 'class-transformer';
+import { AffinityServiceInterface } from './AffinityServiceInterface';
+import { AffinityDto } from '../models/dto/Affinity';
 
 @injectable()
 export class IssueService implements IssueServiceInterface {
@@ -13,29 +14,42 @@ export class IssueService implements IssueServiceInterface {
         @inject(TYPES.IssueRepositoryInterface)
         private issueRepository: IssueRepositoryInterface,
         @inject(TYPES.PositionServiceInterface)
-        private positionService: PositionServiceInterface
+        private positionService: PositionServiceInterface,
+        @inject(TYPES.AffinityServiceInterface)
+        private affinityService: AffinityServiceInterface
     ) {}
 
-    async consolidateIssues(level: string, level_id: number): Promise<Issue[]> {
+    async consolidateIssues(level: string, level_id: number) {
         const positions = await this.positionService.getPositions(
             level,
             level_id
         );
 
-        // Here we need to build out a better way to consolidate issues
-        const issues = positions.map((position) => {
-            const raw = {
+        const issueDtos = positions.map((position) =>
+            plainToInstance(IssueDto, {
                 level,
                 level_id,
                 description: position.issue,
-            };
+            })
+        );
 
-            const dto = plainToInstance(IssueDto, raw);
+        const issues = await this.issueRepository.updateIssues(issueDtos);
 
-            return dto;
-        });
+        /**
+         * Eventually this approach will no longer work once the issues
+         * are truely consolidated and the indices no longer match the
+         * indices of the positions.
+         */
+        const affinityDtos = positions.map((position, index) =>
+            plainToInstance(AffinityDto, {
+                actor_type: 'candidate',
+                actor_id: position.candidate_id,
+                issue_id: issues[index].issue_id,
+                position: position.position,
+            })
+        );
 
-        return await this.issueRepository.updateIssues(issues);
+        await this.affinityService.createAffinities(affinityDtos);
     }
 
     async getIssues(level: string, level_id: number): Promise<IssueDto[]> {
