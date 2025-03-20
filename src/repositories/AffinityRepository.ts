@@ -17,4 +17,13 @@ export class AffinityRepository implements AffinityRepositoryInterface {
         const createdAffinities = this.repo.create(affinities);
         return await this.repo.save(createdAffinities);
     }
+
+    async getAffinities(
+        issue_id: number,
+        actor_type: string
+    ): Promise<Affinity[]> {
+        return await this.repo.find({
+            where: { issue_id: issue_id, actor_type: actor_type },
+        });
+    }
 }

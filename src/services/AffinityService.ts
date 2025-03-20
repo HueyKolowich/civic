@@ -31,4 +31,45 @@ export class AffinityService implements AffinityServiceInterface {
             transformedAffinities
         );
     }
+
+    async checkAffinities(affinities: AffinityDto[]): Promise<number> {
+        const candidateAffinities = await Promise.all(
+            affinities.map(
+                async (affinity) =>
+                    await this.affinityRepository.getAffinities(
+                        affinity.issue_id,
+                        'candidate'
+                    )
+            )
+        );
+
+        const candidateScores: { [candidate_id: number]: number } = {};
+
+        for (let i = 0; i < affinities.length; i++) {
+            const voterAffinity = affinities[i].affinity;
+            const candidatesForIssue = candidateAffinities[i];
+
+            for (const candidate of candidatesForIssue) {
+                const scoreContribution = voterAffinity * candidate.affinity;
+
+                if (candidate.actor_id in candidateScores) {
+                    candidateScores[candidate.actor_id] += scoreContribution;
+                } else {
+                    candidateScores[candidate.actor_id] = scoreContribution;
+                }
+            }
+        }
+
+        let bestCandidateId: number = -1;
+        let bestScore: number = -Infinity;
+        for (const candidateId in candidateScores) {
+            const score = candidateScores[candidateId];
+            if (score > bestScore) {
+                bestScore = score;
+                bestCandidateId = Number(candidateId);
+            }
+        }
+
+        return bestCandidateId;
+    }
 }

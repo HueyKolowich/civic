@@ -3,8 +3,10 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
+    Index,
 } from 'typeorm';
 
+@Index('idx_issueid_actortype', ['issue_id', 'actor_type'])
 @Entity()
 export class Affinity {
     @PrimaryGeneratedColumn()

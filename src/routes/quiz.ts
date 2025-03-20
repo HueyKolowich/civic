@@ -6,5 +6,6 @@ const quizRouter = Router();
 const quizController = container.get<QuizController>(QuizController);
 
 quizRouter.get('/', quizController.getQuiz.bind(quizController));
+quizRouter.post('/', quizController.calculateQuizResults.bind(quizController));
 
 export default quizRouter;

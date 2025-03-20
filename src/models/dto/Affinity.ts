@@ -16,7 +16,6 @@ export class AffinityDto {
     issue_id!: number;
 
     @IsString()
-    @IsNotEmpty()
     @Expose()
     position!: string;
 

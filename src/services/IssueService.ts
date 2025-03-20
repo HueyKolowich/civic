@@ -52,14 +52,18 @@ export class IssueService implements IssueServiceInterface {
         await this.affinityService.createAffinities(affinityDtos);
     }
 
-    async getIssues(level: string, level_id: number): Promise<IssueDto[]> {
+    async getIssues(
+        level: string,
+        level_id: number
+    ): Promise<{ issue_id: number; description: string }[]> {
         const issues = await this.issueRepository.getIssuesByLevelId(
             level,
             level_id
         );
 
-        return plainToInstance(IssueDto, issues, {
-            excludeExtraneousValues: true,
-        });
+        return issues.map((issue) => ({
+            issue_id: issue.issue_id,
+            description: issue.description,
+        }));
     }
 }
