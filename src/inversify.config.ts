@@ -21,6 +21,11 @@ import { AffinityService } from './services/AffinityService';
 import { AffinityRepositoryInterface } from './repositories/AffinityRepositoryInterface';
 import { AffinityRepository } from './repositories/AffinityRepository';
 
+import { CandidateServiceInterface } from './services/CandidateServiceInterface';
+import { CandidateService } from './services/CandidateService';
+import { CandidateRepositoryInterface } from './repositories/CandidateRepositoryInterface';
+import { CandidateRepository } from './repositories/CandidateRepository';
+
 const container = new Container();
 
 // Repositories
@@ -33,6 +38,9 @@ container
 container
     .bind<AffinityRepositoryInterface>(TYPES.AffinityRepositoryInterface)
     .to(AffinityRepository);
+container
+    .bind<CandidateRepositoryInterface>(TYPES.CandidateRepositoryInterface)
+    .to(CandidateRepository);
 
 // Services
 container
@@ -44,6 +52,9 @@ container
 container
     .bind<AffinityServiceInterface>(TYPES.AffinityServiceInterface)
     .to(AffinityService);
+container
+    .bind<CandidateServiceInterface>(TYPES.CandidateServiceInterface)
+    .to(CandidateService);
 
 // Controllers
 container.bind<PositionController>(PositionController).toSelf();

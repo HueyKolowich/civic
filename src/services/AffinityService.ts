@@ -32,7 +32,9 @@ export class AffinityService implements AffinityServiceInterface {
         );
     }
 
-    async checkAffinities(affinities: AffinityDto[]): Promise<number> {
+    async checkAffinities(
+        affinities: AffinityDto[]
+    ): Promise<{ candidate_id: number; score: number }> {
         const candidateAffinities = await Promise.all(
             affinities.map(
                 async (affinity) =>
@@ -44,6 +46,7 @@ export class AffinityService implements AffinityServiceInterface {
         );
 
         const candidateScores: { [candidate_id: number]: number } = {};
+        const candidateMaxScores: { [candidate_id: number]: number } = {};
 
         for (let i = 0; i < affinities.length; i++) {
             const voterAffinity = affinities[i].affinity;
@@ -52,24 +55,37 @@ export class AffinityService implements AffinityServiceInterface {
             for (const candidate of candidatesForIssue) {
                 const scoreContribution = voterAffinity * candidate.affinity;
 
-                if (candidate.actor_id in candidateScores) {
-                    candidateScores[candidate.actor_id] += scoreContribution;
-                } else {
-                    candidateScores[candidate.actor_id] = scoreContribution;
-                }
+                candidateScores[candidate.actor_id] =
+                    (candidateScores[candidate.actor_id] || 0) +
+                    scoreContribution;
+                candidateMaxScores[candidate.actor_id] =
+                    (candidateMaxScores[candidate.actor_id] || 0) + 1;
             }
         }
 
         let bestCandidateId: number = -1;
         let bestScore: number = -Infinity;
+        let bestAgreementPercentage: number = 0;
+
         for (const candidateId in candidateScores) {
-            const score = candidateScores[candidateId];
-            if (score > bestScore) {
-                bestScore = score;
+            const actualScore = candidateScores[candidateId];
+            const maxPossibleScore = candidateMaxScores[candidateId];
+
+            const agreementPercentage =
+                maxPossibleScore > 0
+                    ? (actualScore / maxPossibleScore) * 100
+                    : 0;
+
+            if (actualScore > bestScore) {
+                bestScore = actualScore;
                 bestCandidateId = Number(candidateId);
+                bestAgreementPercentage = agreementPercentage;
             }
         }
 
-        return bestCandidateId;
+        return {
+            candidate_id: bestCandidateId,
+            score: bestAgreementPercentage,
+        };
     }
 }

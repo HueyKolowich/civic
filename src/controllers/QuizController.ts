@@ -5,6 +5,7 @@ import { AffinityDto } from '../models/dto/Affinity';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { AffinityServiceInterface } from '../services/AffinityServiceInterface';
+import { CandidateServiceInterface } from '../services/CandidateServiceInterface';
 
 @injectable()
 export class QuizController {
@@ -12,7 +13,9 @@ export class QuizController {
         @inject(TYPES.IssueServiceInterface)
         private issueService: IssueServiceInterface,
         @inject(TYPES.AffinityServiceInterface)
-        private affinityService: AffinityServiceInterface
+        private affinityService: AffinityServiceInterface,
+        @inject(TYPES.CandidateServiceInterface)
+        private candidateService: CandidateServiceInterface
     ) {}
 
     async getQuiz(req: any, res: any) {
@@ -45,11 +48,13 @@ export class QuizController {
                 )
             );
 
-            const quizResult = await this.affinityService.checkAffinities(
-                validatedResponses
-            );
+            const { candidate_id, score } =
+                await this.affinityService.checkAffinities(validatedResponses);
 
-            return res.status(200).json(quizResult);
+            const candidateNameResult =
+                await this.candidateService.getCandidateName(candidate_id);
+
+            return res.status(200).json({ name: candidateNameResult, score });
         } catch (error: any) {
             if (error.message.includes('Validation failed')) {
                 return res.status(400).json({ error: error.message });
