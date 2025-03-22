@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Issues Quiz</title>
+    <script src="quiz.js" defer></script>
+    
+    <style>
+        
+        /* General page styling */
+        body {
+            background-color: #45117adf;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h2 {
+            background-color: #A5A7EE;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Centered quiz container */
+        .quiz-container {
+            background-color: #130024;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: left;
+            width: 60%;
+        }
+
+        .question {
+            font-weight: bold;
+            font-size: 20px;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .options {
+            margin-top: 8px;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: black;
+            color: white;
+            padding: 12px;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            border-radius: 8px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        button.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        button:hover {
+            background-color: #444;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Slider Styling */
+        .slider-container {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .slider {
+        width: 100%;
+        margin-top: 10px;
+        }
+
+        .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px; /* Smaller text for the labels */
+        margin-top: 5px;
+        }   
+
+        .slider-labels span {
+        width: 14.28%;  /* Ensures the labels are evenly distributed */
+        text-align: center;
+        }
+
+        /* Adjust label font size and make sure it's smaller */
+        .slider-labels span {
+        font-size: 12px;  /* Smaller text for the labels */
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        .match-percent {
+            font-size: 22px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .result-card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    text-align: center;
+    margin: auto;
+    color: black;
+
+    .result-card p,
+    .result-card ul,
+    .result-card li,
+    .result-card strong {
+    color: black; /* Forces black text for all content inside */
+}
+}
+
+.result-card ul {
+    text-align: left;
+    padding: 0;
+    list-style-position: inside;
+}
+
+.button-container {
+    margin-top: 20px;
+}
+
+.button-container button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #6200ea;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.button-container button:hover {
+    background-color: #3700b3;
+}
+
+    </style>
+
+</head>
+<body>
+    <h2>Take the Candidate Issues Quiz!</h2>
+    
+    <!-- Level Selection Form -->
+    <div class="quiz-container" id="levelSelection">
+        <label for="level">Select Your Jurisdiction Level:</label>
+        <select id="level" name="level">
+            <option value="">Select Level</option>
+            <option value="Municipality">Municipality</option>
+            <option value="School District">School District</option>
+            <option value="County">County</option>
+            <option value="State House District">State House District</option>
+            <option value="State Senate District">State Senate District</option>
+            <option value="State">State</option>
+        </select>
+        <button id="startQuiz" onclick="fetchQuiz()">Start Quiz</button>
+    </div>
+
+    
+    
+    <!-- Quiz Content -->
+
+    <div class="quiz-container" id="quizContainer" style="display: none;">
+        <div id="questionWrapper"></div>
+        <button id="nextButton" onclick="navigateQuestion(1)">Next</button>
+        <button id="submitButton" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+    </div>
+
+<!-- Candidate Swipe Section -->
+<div class="quiz-container" id="swipeContainer" style="display: none;">
+    <div id="swipeCard"></div>
+
+    <!-- Swipe Buttons in the HTML (Always Present) -->
+    <div style="display: flex; justify-content: space-around; width: 100%; margin-top: 20px;">
+        <button id="swipeLeftButton" style="background: none; border: none; font-size: 20px; color: #ff4d4d; cursor: pointer;">
+            ❌ Swipe Left
+        </button>
+        <button id="swipeRightButton" style="background: none; border: none; font-size: 20px; color: #4CAF50; cursor: pointer;">
+            ❤️ Swipe Right
+        </button>
+    </div>
+</div>
+
+    
+</body>
+</html>
